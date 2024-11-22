@@ -29,4 +29,4 @@ EXPOSE 8090
 #USER nobody
 
 # Update ENTRYPOINT to use shell form to allow environment variable expansion
-ENTRYPOINT ["/usr/local/bin/pocketbase", "serve", "--http=0.0.0.0:8090", "--dir=/pb_data", "--publicDir=/pb_public", "--hooksDir=/pb_hooks"]
+ENTRYPOINT ["/usr/local/bin/pocketbase", "serve", "--http=0.0.0.0:8090", "--dir=/pb_data", "--publicDir=/pb_public", "--hooksDir=/pb_hooks", "--encryptionEnv=ENCRYPTION_KEY"]
