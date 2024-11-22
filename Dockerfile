@@ -1,4 +1,4 @@
-FROM alpine:3 as downloader
+FROM alpine:3 AS downloader
 
 ARG TARGETOS
 ARG TARGETARCH
@@ -12,9 +12,20 @@ RUN wget https://github.com/pocketbase/pocketbase/releases/download/v${VERSION}/
     && chmod +x /pocketbase
 
 FROM alpine:3
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+
+RUN apk update && \
+    apk add --no-cache ca-certificates && \
+    rm -rf /var/cache/apk/*
+
+COPY --from=downloader /pocketbase /usr/local/bin/pocketbase
 
 EXPOSE 8090
 
-COPY --from=downloader /pocketbase /usr/local/bin/pocketbase
+# Create directories with appropriate permissions
+RUN mkdir -p /pb_data /pb_public /pb_hooks && \
+    chown -R nobody:nobody /pb_data /pb_public /pb_hooks
+
+# Switch to non-root user
+USER nobody
+
 ENTRYPOINT ["/usr/local/bin/pocketbase", "serve", "--http=0.0.0.0:8090", "--dir=/pb_data", "--publicDir=/pb_public", "--hooksDir=/pb_hooks"]
