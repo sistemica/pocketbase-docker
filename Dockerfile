@@ -20,8 +20,8 @@ RUN apk update && \
 COPY --from=downloader /pocketbase /usr/local/bin/pocketbase
 
 # Create directories with appropriate permissions
-RUN mkdir -p /pb_data /pb_public /pb_hooks && \
-    chown -R nobody:nobody /pb_data /pb_public /pb_hooks
+#RUN mkdir -p /pb_data /pb_public /pb_hooks && \
+#    chown -R nobody:nobody /pb_data /pb_public /pb_hooks
 
 EXPOSE 8090
 
