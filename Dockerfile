@@ -19,13 +19,19 @@ RUN apk update && \
 
 COPY --from=downloader /pocketbase /usr/local/bin/pocketbase
 
-EXPOSE 8090
-
 # Create directories with appropriate permissions
 RUN mkdir -p /pb_data /pb_public /pb_hooks && \
     chown -R nobody:nobody /pb_data /pb_public /pb_hooks
 
+EXPOSE 8090
+
 # Switch to non-root user
 USER nobody
 
-ENTRYPOINT ["/usr/local/bin/pocketbase", "serve", "--http=0.0.0.0:8090", "--dir=/pb_data", "--publicDir=/pb_public", "--hooksDir=/pb_hooks"]
+# Update ENTRYPOINT to use shell form to allow environment variable expansion
+ENTRYPOINT pocketbase serve \
+    --http=0.0.0.0:8090 \
+    --dir=/pb_data \
+    --publicDir=/pb_public \
+    --hooksDir=/pb_hooks \
+    --encryptionEnv=ENCRYPTION
