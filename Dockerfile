@@ -26,11 +26,7 @@ COPY --from=downloader /pocketbase /usr/local/bin/pocketbase
 EXPOSE 8090
 
 # Switch to non-root user
-USER nobody
+#USER nobody
 
 # Update ENTRYPOINT to use shell form to allow environment variable expansion
-ENTRYPOINT pocketbase serve \
-    --http=0.0.0.0:8090 \
-    --dir=/pb_data \
-    --publicDir=/pb_public \
-    --hooksDir=/pb_hooks 
+ENTRYPOINT ["/usr/local/bin/pocketbase", "serve", "--http=0.0.0.0:8090", "--dir=/pb_data", "--publicDir=/pb_public", "--hooksDir=/pb_hooks"]
