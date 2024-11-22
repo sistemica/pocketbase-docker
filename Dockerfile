@@ -35,3 +35,4 @@ ENTRYPOINT pocketbase serve \
     --publicDir=/pb_public \
     --hooksDir=/pb_hooks \
     --encryptionEnv=ENCRYPTION
+    --debug
